@@ -3,6 +3,7 @@
   "short_name": "Calorie Grid",
   "description": "Track your daily calories with a visual grid",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
