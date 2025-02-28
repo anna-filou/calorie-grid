@@ -1,15 +1,14 @@
-const CACHE_NAME = 'calorie-grid-v1.1'; // Increment cache version to force update
+const CACHE_NAME = 'calorie-grid-v1.2'; // Change to force update
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/style.css',
   '/app.js',
   '/manifest.json',
-  '/icons/icon-128x128.png',
+  '/icons/icon-32x32.png',
   '/icons/icon-256x256.png',
-  '/icons/icon-any-256x256.png',
-  '/icons/icon-512x512.png'
-  // Add any other resources your app needs to function offline
+  '/icons/icon-512x512.png',
+  '/favicon.svg'
 ];
 
 // Pre-cache essential assets during installation
