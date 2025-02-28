@@ -6,7 +6,13 @@ const ASSETS_TO_CACHE = [
   '/app.js',
   '/manifest.json',
   '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+  '/icons/icon-512x512.png',
+  'index.html',
+  'style.css',
+  'app.js',
+  'manifest.json',
+  'icons/icon-192x192.png',
+  'icons/icon-512x512.png'
 ];
 
 
@@ -18,7 +24,7 @@ self.addEventListener('install', event => {
       .then(cache => {
         return cache.addAll(ASSETS_TO_CACHE);
       })
-      .then(() => self.skipWaiting()) // ? examples don't have this
+      .then(() => self.skipWaiting()) // ensure clients use latest version?
   );
 });
 
