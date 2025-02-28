@@ -128,7 +128,7 @@ body {
 }
 
 .calorie-info {
-    font-size: 24px;
+    font-size: 28px;
 }
 
 .square-info {
@@ -341,7 +341,7 @@ body {
     gap: 10px;
 }
 
-.btn-primary, .btn-seconday{
+.btn-primary, .btn-secondary, .btn-danger {
     /* flex: 1; */
     cursor: pointer;
     font-size: 20px;
@@ -354,7 +354,7 @@ body {
     border-style: solid;
 }
 
-.btn-primary:active, .btn-seconday:active {
+.btn-primary:active, .btn-secondary:active, .btn-danger:active {
     border-top-width: 6px;
     border-bottom-width: 2px;
 }
@@ -365,10 +365,16 @@ body {
     background-color: var(--btn-primary-bg);
 }
 
-.btn-seconday {
+.btn-secondary {
     background-color: var(--btn-secondary-bg);
     color: var(--btn-secondary-text);
     border-color: var(--btn-secondary-border-color);
+}
+
+.btn-danger {
+    background-color: var(--stepper-red-bg);
+    color: var(--stepper-red);
+    border-color: var(--stepper-red-border);
 }
 
 .overlay {
