@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>Calorie Grid</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-256x256.png">
+    <link rel="icon" href="/icons/icon-32x32.png" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <!-- <meta name="theme-color" content="#FFFBF7" media="(prefers-color-scheme: light)"> -->
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#000000">
+    <meta name="color-scheme" content="dark">
+</head>
+<body>
+    <div class="container">
+        <div class="section header">
+            <div class="calorie-info">
+                <div class="calorie-total">
+                    <span id="current-calories" class="primary-value">1500</span>
+                    <span class="separator">-</span>
+                    <span id="consumed-calories" class="secondary-value">500</span>
+                </div>
+                <div class="calorie-remaining">
+                    <span id="remaining-calories" class="primary-value">1000 kcal</span>
+                </div>
+            </div>
+            <div class="square-info">
+                <div class="square-total">
+                    <span id="total-squares" class="primary-value">30</span>
+                    <span class="separator">-</span>
+                    <span id="used-squares" class="secondary-value">10 squares</span>
+                </div>
+                <div class="square-remaining">
+                    <span id="remaining-squares" class="primary-value">20 squares</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section grid-container">
+            <div id="calorie-grid" class="grid"></div>
+        </div>
+        
+        <div class="section stepper-container">
+            <div class="stepper green-stepper">
+                <button class="stepper-btn minus-btn">-</button>
+                <div id="good-count" class="stepper-value">6</div>
+                <button class="stepper-btn plus-btn">+</button>
+            </div>
+            <div class="stepper red-stepper">
+                <button class="stepper-btn minus-btn">-</button>
+                <div id="bad-count" class="stepper-value">4</div>
+                <button class="stepper-btn plus-btn">+</button>
+            </div>
+        </div>
+
+        <button id="reset-btn" class="reset-btn">Reset</button>
+        
+    </div>
+
+    <!-- Bottom Sheet for Calorie Setting -->
+    <div id="calorie-sheet" class="bottom-sheet">
+        <div class="sheet-content">
+            <div class="sheet-header">
+                <h2>Adjust calorie target</h2>
+                <button id="close-calorie-sheet" class="close-btn">&times;</button>
+            </div>
+            <div class="stepper calorie-stepper">
+                <button id="calorie-minus" class="stepper-btn minus-btn">-50</button>
+                <div id="calorie-value" class="stepper-value">1500</div>
+                <button id="calorie-plus" class="stepper-btn plus-btn">+50</button>
+            </div>
+            <!-- <div class="sheet-info">Each step is 50 kcal (1 square)</div> -->
+            <button id="save-calories" class="btn-primary">Save</button>
+        </div>
+    </div>
+
+    <!-- Bottom Sheet for Reset Confirmation -->
+    <div id="reset-sheet" class="bottom-sheet">
+        <div class="sheet-content">
+            <div class="sheet-header">
+                <h2>Are you sure?</h2>
+                <button id="close-reset-sheet" class="close-btn">&times;</button>
+            </div>
+            <div class="action-buttons">
+                <button id="cancel-reset" class="btn-seconday">Cancel</button>
+                <button id="confirm-reset" class="btn-primary">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
+    <script src="app.js"></script>
+    <script>
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => console.log('Service Worker registered with scope:', registration.scope))
+                    .catch(error => console.log('Service worker registration failed', error));
+            });
+        }
+    </script>
+</body>
+</html>

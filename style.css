@@ -1,0 +1,416 @@
+:root {
+    --max-width: 440px;
+    --padding: 16px;
+    /* COLORS */
+
+    --background-color: #b6a89b;
+    --container-bg: #FFFBF7;
+
+    --text-primary: #000000;
+    --text-secondary: #0000006c;
+
+    --editable-bg: #0000001c;
+    --border-color: #00000010;
+
+
+    /* GRID */
+    --square-empty: #00000009;
+    --square-border: #ffffff25;
+    --square-green: #8DBE4E;
+    --square-red: #E55D3E;
+
+    /* STEPPERS */
+    --stepper-green: rgba(7, 144, 0, 1);
+    --stepper-green-bg: #ffffff;
+    --stepper-green-border: rgba(7, 144, 0, 1);
+    --stepper-btn-green-bg: rgba(215, 247, 214, 1);
+
+    --stepper-red: rgba(178, 49, 45, 1);
+    --stepper-red-bg: #ffffff;
+    --stepper-red-border: rgba(178, 49, 45, 1);
+    --stepper-btn-red-bg: rgba(246, 234, 233, 1);
+
+    /* BOTTOM SHEETS */
+    --bottom-sheet-bg: white;
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+
+    /* ACTION */
+    --btn-primary-bg: #41454A;
+    --btn-primary-text: #FFF;
+    --btn-primary-border-color: #1F242C;
+
+    /* CANCEL */
+    --btn-secondary-bg: #fff;
+    --btn-secondary-text: rgba(46, 46, 46, 1);
+    --btn-secondary-border-color: rgb(203, 203, 203);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #121212; 
+        --editable-bg: #ffffff1c; 
+        --text-primary: #ffffff; 
+        --text-secondary: #ffffff99; 
+        --container-bg: #1e1e1e; 
+        --border-color: #ffffff1a; 
+
+        /* GRID */
+        --square-empty: #ffffff1a; 
+        --square-border: #00000025; 
+        --square-green: #659329; 
+        --square-red: #BA2C28; 
+
+        /* STEPPERS */
+        --stepper-green: #ffffff; 
+        --stepper-green-bg: #4A7E07;
+        --stepper-green-border: #3A6800;
+        --stepper-btn-green-bg: #ffffff20; 
+
+        --stepper-red: #ffffff; 
+        --stepper-red-bg: #A71E1A;
+        --stepper-red-border: #8C0300;
+        --stepper-btn-red-bg: #ffffff20; 
+
+        /* BOTTOM SHEETS */
+        --bottom-sheet-bg: #1e1e1e; 
+        --overlay-bg: rgba(0, 0, 0, 0.8); 
+
+        /* ACTION */
+        --btn-primary-bg: #e1e1e1; 
+        --btn-primary-text: #000000; 
+        --btn-primary-border-color: #c9c9c9; 
+
+        /* CANCEL */
+        --btn-secondary-bg: #2c2c2c; 
+        --btn-secondary-text: #ffffff; 
+        --btn-secondary-border-color: #ffffff1a; 
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    min-height: 100dvh;
+}
+
+.container {
+    background-color: var(--container-bg);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.grid-container {
+    /* background-color: rgb(168, 168, 168); */
+    align-self: stretch;
+    flex: 1 1 auto;
+    overflow: auto;
+    border-bottom: 4px solid var(--border-color);
+}
+
+.section {
+    padding: var(--padding);
+}
+
+.header {
+    border-bottom: 4px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.calorie-info {
+    font-size: 24px;
+}
+
+.square-info {
+    font-size: 16px;
+}
+
+.calorie-info, .square-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.primary-value {
+    font-weight: 900;
+}
+
+.secondary-value {
+    color: var(--text-secondary);
+}
+
+.separator {
+    font-size: 24px;
+    color: var(--text-secondary);
+    margin: 0 5px;
+}
+
+.calorie-total, .square-total {
+    display: flex;
+    align-items: center;
+}
+
+.calorie-remaining, .square-remaining {
+    text-align: right;
+    color: var(--text-secondary);
+}
+
+/* Grid styles */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.grid-square {
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+    background-color: var(--square-empty);
+    /* border: 6px solid rgba(0, 0, 0, 0.02); */
+}
+
+.grid-square.green {
+    background-color: var(--square-green);
+    border: 6px solid var(--square-border);
+}
+
+.grid-square.red {
+    background-color: var(--square-red);
+    border: 6px solid var(--square-border);
+}
+
+/* Stepper styles */
+.stepper-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.stepper {
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+    flex: 1;
+    border-width: 2px 2px 6px 2px;
+    border-style: solid;
+}
+
+.green-stepper {
+    /* background-color: rgba(92, 184, 92, 0.1); */
+    border-color: var(--stepper-green-border);
+    background-color: var(--stepper-green-bg);
+}
+
+.red-stepper {
+    /* background-color: rgba(217, 83, 79, 0.1); */
+    border-color: var(--stepper-red-border);
+    background-color: var(--stepper-red-bg);
+}
+
+.stepper-btn {
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    display: flex;
+    aspect-ratio: 1/1;
+    width: 56px;
+    height: 56px;
+    padding-bottom: 3px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: none;
+
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.green-stepper .stepper-btn {
+    background-color: var(--stepper-btn-green-bg);
+    color: var(--stepper-green);
+}
+
+.red-stepper .stepper-btn {
+    background-color: var(--stepper-btn-red-bg);
+    color: var(--stepper-red);
+}
+
+
+/* Removed hover because it stays stuck there on mobile after pressing */
+/* .stepper-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05); 
+} */
+.stepper-btn:active {
+    background-color: rgba(0, 0, 0, 0.2); 
+}
+
+.stepper-value {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.green-stepper .stepper-value {
+    color: var(--stepper-green);
+}
+
+.red-stepper .stepper-value {
+    color: var(--stepper-red);
+}
+
+/* Bottom sheet styles */
+.bottom-sheet {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--bottom-sheet-bg);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    z-index: 11;
+    transition: bottom 0.2s ease-in-out;
+}
+
+.bottom-sheet.show {
+    bottom: 0;
+}
+
+.sheet-content {
+    padding: 20px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sheet-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.calorie-stepper {
+    margin: 32px auto;
+    max-width: 400px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+#calorie-minus, #calorie-plus {
+    width: auto;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.sheet-info {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-primary, .btn-seconday{
+    /* flex: 1; */
+    cursor: pointer;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 800;
+    padding: 18px 0px;
+    width: 100%;
+    border-radius: 12px;
+    border-width: 2px 2px 6px 2px;
+    border-style: solid;
+}
+
+.btn-primary:active, .btn-seconday:active {
+    border-top-width: 6px;
+    border-bottom-width: 2px;
+}
+
+.btn-primary {
+    color: var(--btn-primary-text);
+    border-color: var(--btn-primary-border-color);
+    background-color: var(--btn-primary-bg);
+}
+
+.btn-seconday {
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    border-color: var(--btn-secondary-border-color);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-bg);
+    visibility: hidden;
+    opacity: 0;
+    z-index: 10;
+    transition: opacity 0.2s ease-in-out, visibility 0s 0.2s;
+}
+
+.overlay.show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.reset-btn {
+    color: var(--text-secondary);
+    background-color: transparent;
+    border: none;
+    padding-bottom: var(--padding);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#current-calories, #remaining-calories {
+    cursor: pointer;
+}
+
+#current-calories {
+    padding: 4px;
+    border-radius: 4px;
+    background: var(--editable-bg);
+}
