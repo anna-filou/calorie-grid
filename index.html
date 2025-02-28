@@ -20,22 +20,22 @@
         <div class="section header">
             <div class="calorie-info">
                 <div class="calorie-total">
-                    <span id="current-calories" class="primary-value">1500</span>
+                    <span id="calories-total" class="primary-value">1500</span>
                     <span class="separator">-</span>
-                    <span id="consumed-calories" class="secondary-value">500</span>
+                    <span id="calories-used" class="secondary-value">500</span>
                 </div>
                 <div class="calorie-remaining">
-                    <span id="remaining-calories" class="primary-value">1000 kcal</span>
+                    <span id="calories-remaining" class="primary-value">1000 kcal</span>
                 </div>
             </div>
             <div class="square-info">
                 <div class="square-total">
-                    <span id="total-squares" class="primary-value">30</span>
+                    <span id="squares-total" class="primary-value">30</span>
                     <span class="separator">-</span>
-                    <span id="used-squares" class="secondary-value">10 squares</span>
+                    <span id="squares-used" class="secondary-value">10 squares</span>
                 </div>
                 <div class="square-remaining">
-                    <span id="remaining-squares" class="primary-value">20 squares</span>
+                    <span id="squares-remaining" class="primary-value">20 squares</span>
                 </div>
             </div>
         </div>
@@ -45,19 +45,19 @@
         </div>
         
         <div class="section stepper-container">
-            <div class="stepper green-stepper">
-                <button class="stepper-btn minus-btn">-</button>
+            <div class="stepper stepper-green">
+                <button class="stepper-btn btn-minus">-</button>
                 <div id="good-count" class="stepper-value">6</div>
-                <button class="stepper-btn plus-btn">+</button>
+                <button class="stepper-btn btn-plus">+</button>
             </div>
-            <div class="stepper red-stepper">
-                <button class="stepper-btn minus-btn">-</button>
+            <div class="stepper stepper-red">
+                <button class="stepper-btn btn-minus">-</button>
                 <div id="bad-count" class="stepper-value">4</div>
-                <button class="stepper-btn plus-btn">+</button>
+                <button class="stepper-btn btn-plus">+</button>
             </div>
         </div>
 
-        <button id="reset-btn" class="reset-btn">Clear</button>
+        <button id="btn-reset" class="btn-reset">Clear</button>
         
     </div>
 
@@ -69,9 +69,9 @@
                 <button id="close-calorie-sheet" class="close-btn">&times;</button>
             </div>
             <div class="stepper calorie-stepper">
-                <button id="calorie-minus" class="stepper-btn minus-btn">-50</button>
+                <button id="calorie-minus" class="stepper-btn btn-minus">-50</button>
                 <div id="calorie-value" class="stepper-value">1500</div>
-                <button id="calorie-plus" class="stepper-btn plus-btn">+50</button>
+                <button id="calorie-plus" class="stepper-btn btn-plus">+50</button>
             </div>
             <!-- <div class="sheet-info">Each step is 50 kcal (1 square)</div> -->
             <button id="save-calories" class="btn-primary">Save</button>
@@ -86,8 +86,8 @@
                 <button id="close-reset-sheet" class="close-btn">&times;</button>
             </div>
             <div class="action-buttons">
-                <button id="cancel-reset" class="btn-secondary">Cancel</button>
-                <button id="confirm-reset" class="btn-danger">Clear all</button>
+                <button id="reset-cancel" class="btn-secondary">Cancel</button>
+                <button id="reset-confirm" class="btn-danger">Clear all</button>
             </div>
         </div>
     </div>

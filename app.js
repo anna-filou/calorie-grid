@@ -1,19 +1,19 @@
 // DOM Elements
-const currentCaloriesEl = document.getElementById('current-calories');
-const consumedCaloriesEl = document.getElementById('consumed-calories');
-const remainingCaloriesEl = document.getElementById('remaining-calories');
-const totalSquaresEl = document.getElementById('total-squares');
-const usedSquaresEl = document.getElementById('used-squares');
-const remainingSquaresEl = document.getElementById('remaining-squares');
+const currentCaloriesEl = document.getElementById('calories-total');
+const consumedCaloriesEl = document.getElementById('calories-used');
+const remainingCaloriesEl = document.getElementById('calories-remaining');
+const totalSquaresEl = document.getElementById('squares-total');
+const usedSquaresEl = document.getElementById('squares-used');
+const remainingSquaresEl = document.getElementById('squares-remaining');
 const calorieGridEl = document.getElementById('calorie-grid');
 
 // Stepper Elements
 const goodCount = document.getElementById('good-count');
 const badCount = document.getElementById('bad-count');
-const goodMinusBtn = document.querySelector('.green-stepper .minus-btn');
-const goodPlusBtn = document.querySelector('.green-stepper .plus-btn');
-const badMinusBtn = document.querySelector('.red-stepper .minus-btn');
-const badPlusBtn = document.querySelector('.red-stepper .plus-btn');
+const goodMinusBtn = document.querySelector('.stepper-green .btn-minus');
+const goodPlusBtn = document.querySelector('.stepper-green .btn-plus');
+const badMinusBtn = document.querySelector('.stepper-red .btn-minus');
+const badPlusBtn = document.querySelector('.stepper-red .btn-plus');
 
 // Bottom Sheet Elements
 const overlay = document.getElementById('overlay');
@@ -25,9 +25,9 @@ const calorieValue = document.getElementById('calorie-value');
 const calorieMinusBtn = document.getElementById('calorie-minus');
 const caloriePlusBtn = document.getElementById('calorie-plus');
 const saveCaloriesBtn = document.getElementById('save-calories');
-const resetBtn = document.getElementById('reset-btn');
-const cancelResetBtn = document.getElementById('cancel-reset');
-const confirmResetBtn = document.getElementById('confirm-reset');
+const resetBtn = document.getElementById('btn-reset');
+const cancelResetBtn = document.getElementById('reset-cancel');
+const confirmResetBtn = document.getElementById('reset-confirm');
 
 // Constants
 const SQUARE_VALUE = 50; // Each square represents 50 calories

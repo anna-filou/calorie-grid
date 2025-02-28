@@ -206,13 +206,13 @@ body {
     border-style: solid;
 }
 
-.green-stepper {
+.stepper-green {
     /* background-color: rgba(92, 184, 92, 0.1); */
     border-color: var(--stepper-green-border);
     background-color: var(--stepper-green-bg);
 }
 
-.red-stepper {
+.stepper-red {
     /* background-color: rgba(217, 83, 79, 0.1); */
     border-color: var(--stepper-red-border);
     background-color: var(--stepper-red-bg);
@@ -238,12 +238,12 @@ body {
     transition: background-color 0.2s ease-in-out;
 }
 
-.green-stepper .stepper-btn {
+.stepper-green .stepper-btn {
     background-color: var(--stepper-btn-green-bg);
     color: var(--stepper-green);
 }
 
-.red-stepper .stepper-btn {
+.stepper-red .stepper-btn {
     background-color: var(--stepper-btn-red-bg);
     color: var(--stepper-red);
 }
@@ -266,11 +266,11 @@ body {
     font-weight: bold;
 }
 
-.green-stepper .stepper-value {
+.stepper-green .stepper-value {
     color: var(--stepper-green);
 }
 
-.red-stepper .stepper-value {
+.stepper-red .stepper-value {
     color: var(--stepper-red);
 }
 
@@ -396,7 +396,7 @@ body {
     transition: opacity 0.2s ease-in-out;
 }
 
-.reset-btn {
+.btn-reset {
     color: var(--text-secondary);
     background-color: transparent;
     border: none;
@@ -411,11 +411,11 @@ body {
     cursor: pointer;
 }
 
-#current-calories, #remaining-calories {
+#calories-total, #calories-remaining {
     cursor: pointer;
 }
 
-#current-calories {
+#calories-total {
     padding: 4px;
     border-radius: 4px;
     background: var(--editable-bg);
