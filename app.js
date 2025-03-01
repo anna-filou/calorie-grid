@@ -103,11 +103,16 @@ function updateUI() {
 
 // Create and update grid
 function updateGrid(totalSquares) {
+    // The total squares in the grid are the largest of the totalSquares (calorie goal) 
+    // or the state.squareHistory (how many squares you've added).
+    // This means that if you add more squares than the budget, it will create an extra square!
+    const requiredSquares = Math.max(totalSquares, state.squareHistory.length);
+
     // Clear the grid
     calorieGridEl.innerHTML = '';
 
     // Create grid squares based on history
-    for (let i = 0; i < totalSquares; i++) {
+    for (let i = 0; i < requiredSquares; i++) {
         const square = document.createElement('div');
         square.classList.add('grid-square');
         
@@ -119,10 +124,15 @@ function updateGrid(totalSquares) {
                 square.classList.add('red');
             }
         }
+
+        if (i >= totalSquares) {
+            square.classList.add('extra'); // Apply special styling
+        }
         
         calorieGridEl.appendChild(square);
     }
 }
+
 
 // Event Handlers
 function handleGoodCountChange(change) {

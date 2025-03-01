@@ -190,6 +190,16 @@ body {
     border: 6px solid var(--square-border);
 }
 
+.grid-square.green.extra {
+    background-color: transparent;
+    border: 6px solid var(--square-green);
+}
+
+.grid-square.red.extra {
+    background-color: transparent;
+    border: 6px solid var(--square-red);
+}
+
 /* Stepper styles */
 .stepper-container {
     display: flex;
