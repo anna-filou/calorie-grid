@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-grid-v1.5'; // Change to force update
+const CACHE_NAME = 'calorie-grid-v1.51'; // Change to force update
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
