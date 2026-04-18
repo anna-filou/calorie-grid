@@ -1,4 +1,4 @@
-const CACHE_NAME = 'calorie-grid-v1.51'; // Change to force update
+const CACHE_NAME = 'calorie-grid-v1.52'; // Change to force update
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -130,3 +130,79 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+
+// Show notification requested by the main thread
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
+    self.registration.showNotification(event.data.title, {
+      body: event.data.body,
+      icon: '/icons/icon-256x256.png',
+      badge: '/icons/icon-32x32.png',
+      tag: 'meal-reminder',
+      renotify: true,
+      data: { url: '/' }
+    });
+  }
+});
+
+// Focus or open the app when a notification is tapped
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const targetUrl = (event.notification.data && event.notification.data.url) || '/';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
+      for (const client of clientList) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) return clients.openWindow(targetUrl);
+    })
+  );
+});
+
+// Background check for reminders (Chrome Android, installed PWA only)
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'check-reminders') {
+    event.waitUntil(checkRemindersBackground());
+  }
+});
+
+function formatTimeSW(timeStr) {
+  const parts = timeStr.split(':');
+  const hour = parseInt(parts[0], 10);
+  const min = parts[1];
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${min} ${ampm}`;
+}
+
+async function checkRemindersBackground() {
+  let reminders = [];
+  try {
+    const cache = await caches.open('reminders-v1');
+    const response = await cache.match('/reminders-data');
+    if (response) reminders = await response.json();
+  } catch (e) {
+    return;
+  }
+  if (!reminders.length) return;
+
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const currentTime = `${hh}:${mm}`;
+
+  for (const reminder of reminders) {
+    if (reminder.time === currentTime) {
+      await self.registration.showNotification('Time to track your meal!', {
+        body: `It's ${formatTimeSW(reminder.time)} — log what you ate in Calorie Grid.`,
+        icon: '/icons/icon-256x256.png',
+        badge: '/icons/icon-32x32.png',
+        tag: `meal-reminder-${reminder.id}`,
+        renotify: true,
+        data: { url: '/' }
+      });
+    }
+  }
+}

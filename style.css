@@ -430,3 +430,108 @@ body {
     border-radius: 4px;
     background: var(--editable-bg);
 }
+
+/* Reminders */
+
+.header-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+}
+
+.btn-reminders {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.reminder-add {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.reminder-time-input {
+    flex: 1;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 14px 12px;
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    background-color: var(--editable-bg);
+    color: var(--text-primary);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.reminder-add .btn-primary {
+    flex: none;
+    width: auto;
+    padding: 14px 24px;
+}
+
+.reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 4px;
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.reminders-empty {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 15px;
+}
+
+.reminder-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background-color: var(--editable-bg);
+    border: 1px solid var(--border-color);
+}
+
+.reminder-time-label {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.reminder-delete-btn {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 14px;
+    width: auto;
+    border-radius: 8px;
+    border-width: 2px 2px 4px 2px;
+    letter-spacing: 0;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--stepper-red);
+    border-color: var(--stepper-red-border);
+    border-style: solid;
+}
+
+.reminder-delete-btn:active {
+    border-top-width: 4px;
+    border-bottom-width: 2px;
+}
+
+.reminder-permission-msg {
+    color: var(--stepper-red);
+    font-size: 14px;
+    margin-top: 8px;
+    text-align: center;
+}

@@ -38,6 +38,14 @@
                     <span id="squares-remaining" class="primary-value">20 squares</span>
                 </div>
             </div>
+            <div class="header-actions">
+                <button id="btn-reminders" class="btn-reminders" aria-label="Meal reminders">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <div class="section grid-container">
@@ -89,6 +97,26 @@
                 <button id="reset-cancel" class="btn-secondary">Cancel</button>
                 <button id="reset-confirm" class="btn-danger">Clear all</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Bottom Sheet for Meal Reminders -->
+    <div id="reminders-sheet" class="bottom-sheet">
+        <div class="sheet-content">
+            <div class="sheet-header">
+                <h2>Meal Reminders</h2>
+                <button id="close-reminders-sheet" class="close-btn">&times;</button>
+            </div>
+            <div id="reminders-list" class="reminders-list">
+                <!-- Populated by JS -->
+            </div>
+            <div class="reminder-add">
+                <input type="time" id="reminder-time" class="reminder-time-input">
+                <button id="add-reminder-btn" class="btn-primary">Add</button>
+            </div>
+            <p id="reminder-permission-msg" class="reminder-permission-msg" style="display:none;">
+                Enable notifications in your browser settings to use reminders.
+            </p>
         </div>
     </div>
 
