@@ -37,6 +37,7 @@ const remindersListEl = document.getElementById('reminders-list');
 const reminderTimeInput = document.getElementById('reminder-time');
 const addReminderBtn = document.getElementById('add-reminder-btn');
 const reminderPermissionMsg = document.getElementById('reminder-permission-msg');
+const reminderAddEl = document.getElementById('reminder-add');
 
 // Constants
 const SQUARE_VALUE = 50; // Each square represents 50 calories
@@ -388,12 +389,15 @@ closeResetSheetBtn.addEventListener('click', () => closeBottomSheet(resetSheet))
 cancelResetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 
 remindersBtn.addEventListener('click', () => {
-    renderRemindersList();
-    if (!('Notification' in window)) {
-        reminderPermissionMsg.textContent = 'Notifications are not supported in this browser.';
+    const supported = 'Notification' in window;
+    remindersListEl.style.display = supported ? '' : 'none';
+    reminderAddEl.style.display = supported ? '' : 'none';
+    if (!supported) {
+        reminderPermissionMsg.textContent = 'Notifications are not supported on your device.';
         reminderPermissionMsg.style.display = 'block';
     } else {
         reminderPermissionMsg.style.display = 'none';
+        renderRemindersList();
     }
     openBottomSheet(remindersSheet);
 });
