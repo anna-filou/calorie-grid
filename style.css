@@ -524,21 +524,13 @@ body {
 .reminder-delete-btn {
     font-size: 14px;
     font-weight: 700;
-    padding: 8px 14px;
+    padding: 8px 0;
     width: auto;
-    border-radius: 8px;
-    border-width: 2px 2px 4px 2px;
-    letter-spacing: 0;
-    cursor: pointer;
+    border: none;
     background-color: transparent;
     color: var(--stepper-red);
-    border-color: var(--stepper-red-border);
-    border-style: solid;
-}
-
-.reminder-delete-btn:active {
-    border-top-width: 4px;
-    border-bottom-width: 2px;
+    cursor: pointer;
+    letter-spacing: 0;
 }
 
 .reminder-permission-msg {
