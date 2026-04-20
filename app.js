@@ -388,12 +388,22 @@ closeCalorieSheetBtn.addEventListener('click', () => closeBottomSheet(calorieShe
 closeResetSheetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 cancelResetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 
+function getOSName() {
+    const ua = navigator.userAgent;
+    if (/iP(hone|od|ad)/.test(ua)) return 'iOS';
+    if (/Android/.test(ua)) return 'Android';
+    if (/Windows/.test(ua)) return 'Windows';
+    if (/Mac/.test(ua)) return 'macOS';
+    if (/Linux/.test(ua)) return 'Linux';
+    return 'your device';
+}
+
 remindersBtn.addEventListener('click', () => {
     const supported = 'Notification' in window;
     remindersListEl.style.display = supported ? '' : 'none';
     reminderAddEl.style.display = supported ? '' : 'none';
     if (!supported) {
-        reminderPermissionMsg.textContent = 'Notifications are not supported on your device.';
+        reminderPermissionMsg.textContent = `${getOSName()} does not support notifications.`;
         reminderPermissionMsg.style.display = 'block';
     } else {
         reminderPermissionMsg.style.display = 'none';
