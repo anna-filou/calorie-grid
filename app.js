@@ -234,12 +234,7 @@ async function saveReminders(reminders) {
 }
 
 function formatTime(timeStr) {
-    const parts = timeStr.split(':');
-    const hour = parseInt(parts[0], 10);
-    const min = parts[1];
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${min} ${ampm}`;
+    return timeStr; // already "HH:MM" in 24-hr format
 }
 
 function getFiredToday() {
@@ -296,7 +291,7 @@ function checkAndFireReminders() {
 function renderRemindersList() {
     const reminders = loadReminders();
     if (!reminders.length) {
-        remindersListEl.innerHTML = '<p class="reminders-empty">No reminders set.</p>';
+        remindersListEl.innerHTML = '<p class="reminders-empty">No reminders yet</p>';
         return;
     }
     remindersListEl.innerHTML = reminders.map(r => `
@@ -308,6 +303,10 @@ function renderRemindersList() {
     remindersListEl.querySelectorAll('.reminder-delete-btn').forEach(btn => {
         btn.addEventListener('click', () => handleDeleteReminder(btn.dataset.id));
     });
+}
+
+function updateTimePlaceholder() {
+    reminderTimeInput.closest('.time-input-wrapper').dataset.empty = reminderTimeInput.value ? 'false' : 'true';
 }
 
 async function handleAddReminder() {
@@ -338,6 +337,7 @@ async function handleAddReminder() {
     reminders.sort((a, b) => a.time.localeCompare(b.time));
     await saveReminders(reminders);
     reminderTimeInput.value = '';
+    updateTimePlaceholder();
     renderRemindersList();
     registerPeriodicSync();
 }
@@ -394,6 +394,8 @@ remindersBtn.addEventListener('click', () => {
 });
 closeRemindersSheetBtn.addEventListener('click', () => closeBottomSheet(remindersSheet));
 addReminderBtn.addEventListener('click', handleAddReminder);
+reminderTimeInput.addEventListener('change', updateTimePlaceholder);
+reminderTimeInput.addEventListener('input', updateTimePlaceholder);
 
 overlay.addEventListener('click', () => {
     if (calorieSheet.classList.contains('show')) {
@@ -408,6 +410,7 @@ overlay.addEventListener('click', () => {
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     loadStateFromStorage();
+    updateTimePlaceholder();
     setInterval(checkAndFireReminders, 30_000);
     registerPeriodicSync();
 });
