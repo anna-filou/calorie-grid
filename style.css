@@ -406,6 +406,10 @@ body {
     transition: opacity 0.2s ease-in-out;
 }
 
+.bottom-actions {
+    display: flex;
+}
+
 .btn-reset {
     color: var(--text-secondary);
     background-color: transparent;
@@ -413,7 +417,7 @@ body {
     padding-bottom: var(--padding);
     text-transform: uppercase;
     letter-spacing: 2px;
-    width: 100%;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -429,4 +433,109 @@ body {
     padding: 4px;
     border-radius: 4px;
     background: var(--editable-bg);
+}
+
+/* Reminders */
+
+.reminder-add {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.time-input-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+}
+
+.time-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 20px;
+    font-weight: 600;
+    pointer-events: none;
+    user-select: none;
+}
+
+.time-input-wrapper[data-empty="false"] .time-placeholder {
+    display: none;
+}
+
+.time-input-wrapper[data-empty="true"] .reminder-time-input {
+    color: transparent;
+}
+
+.reminder-time-input {
+    flex: 1;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 14px 12px;
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    background-color: var(--editable-bg);
+    color: var(--text-primary);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.reminder-add .btn-primary {
+    flex: none;
+    width: auto;
+    padding: 14px 24px;
+}
+
+.reminders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 4px;
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.reminders-empty {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 15px;
+}
+
+.reminder-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background-color: var(--editable-bg);
+    border: 1px solid var(--border-color);
+}
+
+.reminder-time-label {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.reminder-delete-btn {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 0;
+    width: auto;
+    border: none;
+    background-color: transparent;
+    color: var(--stepper-red);
+    cursor: pointer;
+    letter-spacing: 0;
+}
+
+.reminder-permission-msg {
+    color: var(--stepper-red);
+    font-size: 14px;
+    margin-top: 8px;
+    text-align: center;
 }

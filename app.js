@@ -29,9 +29,20 @@ const resetBtn = document.getElementById('btn-reset');
 const cancelResetBtn = document.getElementById('reset-cancel');
 const confirmResetBtn = document.getElementById('reset-confirm');
 
+// Reminders elements
+const remindersBtn = document.getElementById('btn-reminders');
+const remindersSheet = document.getElementById('reminders-sheet');
+const closeRemindersSheetBtn = document.getElementById('close-reminders-sheet');
+const remindersListEl = document.getElementById('reminders-list');
+const reminderTimeInput = document.getElementById('reminder-time');
+const addReminderBtn = document.getElementById('add-reminder-btn');
+const reminderPermissionMsg = document.getElementById('reminder-permission-msg');
+
 // Constants
 const SQUARE_VALUE = 50; // Each square represents 50 calories
 const STORAGE_KEY = 'calorieGridData';
+const REMINDERS_KEY = 'calorieGridReminders';
+const FIRED_TODAY_KEY = 'calorieGridFiredToday';
 
 // State
 let state = {
@@ -202,6 +213,155 @@ function closeBottomSheet(sheet) {
     sheet.classList.remove('show');
 }
 
+// ── Reminders ────────────────────────────────────────────────────────────────
+
+function loadReminders() {
+    const raw = localStorage.getItem(REMINDERS_KEY);
+    return raw ? JSON.parse(raw) : [];
+}
+
+async function saveReminders(reminders) {
+    localStorage.setItem(REMINDERS_KEY, JSON.stringify(reminders));
+    // Sync to Cache Storage so the service worker can read it during periodic sync
+    if ('caches' in window) {
+        try {
+            const cache = await caches.open('reminders-v1');
+            await cache.put('/reminders-data', new Response(JSON.stringify(reminders), {
+                headers: { 'Content-Type': 'application/json' }
+            }));
+        } catch (e) { /* non-critical */ }
+    }
+}
+
+function formatTime(timeStr) {
+    return timeStr; // already "HH:MM" in 24-hr format
+}
+
+function getFiredToday() {
+    const raw = localStorage.getItem(FIRED_TODAY_KEY);
+    return raw ? JSON.parse(raw) : {};
+}
+
+function wasAlreadyFiredToday(timeStr) {
+    return getFiredToday()[timeStr] === new Date().toDateString();
+}
+
+function markFiredToday(timeStr) {
+    const fired = getFiredToday();
+    fired[timeStr] = new Date().toDateString();
+    localStorage.setItem(FIRED_TODAY_KEY, JSON.stringify(fired));
+}
+
+async function fireReminderNotification(timeStr) {
+    try {
+        const registration = await navigator.serviceWorker.ready;
+        await registration.showNotification('Time to track your meal!', {
+            body: `It's ${formatTime(timeStr)} — don't forget to log what you ate.`,
+            icon: '/icons/icon-256x256.png',
+            badge: '/icons/icon-32x32.png',
+            tag: 'meal-reminder',
+            renotify: true,
+            data: { url: '/' }
+        });
+    } catch (e) {
+        // Fallback for environments where SW isn't controlling the page yet
+        if (Notification.permission === 'granted') {
+            new Notification('Time to track your meal!', {
+                body: `It's ${formatTime(timeStr)} — don't forget to log what you ate.`,
+                icon: '/icons/icon-256x256.png'
+            });
+        }
+    }
+}
+
+function checkAndFireReminders() {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    const reminders = loadReminders();
+    if (!reminders.length) return;
+    const now = new Date();
+    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    for (const reminder of reminders) {
+        if (reminder.time === currentTime && !wasAlreadyFiredToday(reminder.time)) {
+            markFiredToday(reminder.time);
+            fireReminderNotification(reminder.time);
+        }
+    }
+}
+
+function renderRemindersList() {
+    const reminders = loadReminders();
+    if (!reminders.length) {
+        remindersListEl.innerHTML = '<p class="reminders-empty">No reminders yet</p>';
+        return;
+    }
+    remindersListEl.innerHTML = reminders.map(r => `
+        <div class="reminder-item">
+            <span class="reminder-time-label">${formatTime(r.time)}</span>
+            <button class="reminder-delete-btn" data-id="${r.id}">Delete</button>
+        </div>
+    `).join('');
+    remindersListEl.querySelectorAll('.reminder-delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => handleDeleteReminder(btn.dataset.id));
+    });
+}
+
+function updateTimePlaceholder() {
+    reminderTimeInput.closest('.time-input-wrapper').dataset.empty = reminderTimeInput.value ? 'false' : 'true';
+}
+
+async function handleAddReminder() {
+    const timeValue = reminderTimeInput.value;
+    if (!timeValue) return;
+
+    if (!('Notification' in window)) {
+        reminderPermissionMsg.textContent = 'Notifications are not supported in this browser.';
+        reminderPermissionMsg.style.display = 'block';
+        return;
+    }
+
+    if (Notification.permission !== 'granted') {
+        const result = await Notification.requestPermission();
+        if (result !== 'granted') {
+            reminderPermissionMsg.textContent = 'Enable notifications in your browser settings to use reminders.';
+            reminderPermissionMsg.style.display = 'block';
+            return;
+        }
+    }
+
+    reminderPermissionMsg.style.display = 'none';
+
+    const reminders = loadReminders();
+    if (reminders.some(r => r.time === timeValue)) return; // no duplicates
+
+    reminders.push({ id: Date.now().toString(), time: timeValue });
+    reminders.sort((a, b) => a.time.localeCompare(b.time));
+    await saveReminders(reminders);
+    reminderTimeInput.value = '';
+    updateTimePlaceholder();
+    renderRemindersList();
+    registerPeriodicSync();
+}
+
+async function handleDeleteReminder(id) {
+    const reminders = loadReminders().filter(r => r.id !== id);
+    await saveReminders(reminders);
+    renderRemindersList();
+}
+
+async function registerPeriodicSync() {
+    if (!('serviceWorker' in navigator)) return;
+    try {
+        const registration = await navigator.serviceWorker.ready;
+        if ('periodicSync' in registration) {
+            await registration.periodicSync.register('check-reminders', {
+                minInterval: 60 * 60 * 1000
+            });
+        }
+    } catch (e) { /* not supported or permission denied */ }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Event Listeners
 goodMinusBtn.addEventListener('click', () => handleGoodCountChange(-1));
 goodPlusBtn.addEventListener('click', () => handleGoodCountChange(1));
@@ -227,13 +387,30 @@ closeCalorieSheetBtn.addEventListener('click', () => closeBottomSheet(calorieShe
 closeResetSheetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 cancelResetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 
+remindersBtn.addEventListener('click', () => {
+    renderRemindersList();
+    reminderPermissionMsg.style.display = 'none';
+    openBottomSheet(remindersSheet);
+});
+closeRemindersSheetBtn.addEventListener('click', () => closeBottomSheet(remindersSheet));
+addReminderBtn.addEventListener('click', handleAddReminder);
+reminderTimeInput.addEventListener('change', updateTimePlaceholder);
+reminderTimeInput.addEventListener('input', updateTimePlaceholder);
+
 overlay.addEventListener('click', () => {
     if (calorieSheet.classList.contains('show')) {
         closeBottomSheet(calorieSheet);
     } else if (resetSheet.classList.contains('show')) {
         closeBottomSheet(resetSheet);
+    } else if (remindersSheet.classList.contains('show')) {
+        closeBottomSheet(remindersSheet);
     }
 });
 
 // Initialize app
-document.addEventListener('DOMContentLoaded', loadStateFromStorage);
+document.addEventListener('DOMContentLoaded', () => {
+    loadStateFromStorage();
+    updateTimePlaceholder();
+    setInterval(checkAndFireReminders, 30_000);
+    registerPeriodicSync();
+});

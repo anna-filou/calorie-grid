@@ -57,7 +57,10 @@
             </div>
         </div>
 
-        <button id="btn-reset" class="btn-reset">Clear</button>
+        <div class="bottom-actions">
+            <button id="btn-reminders" class="btn-reset">Reminders</button>
+            <button id="btn-reset" class="btn-reset">Clear</button>
+        </div>
         
     </div>
 
@@ -89,6 +92,29 @@
                 <button id="reset-cancel" class="btn-secondary">Cancel</button>
                 <button id="reset-confirm" class="btn-danger">Clear all</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Bottom Sheet for Meal Reminders -->
+    <div id="reminders-sheet" class="bottom-sheet">
+        <div class="sheet-content">
+            <div class="sheet-header">
+                <h2>Meal Reminders</h2>
+                <button id="close-reminders-sheet" class="close-btn">&times;</button>
+            </div>
+            <div id="reminders-list" class="reminders-list">
+                <!-- Populated by JS -->
+            </div>
+            <div class="reminder-add">
+                <div class="time-input-wrapper" data-empty="true">
+                    <input type="time" id="reminder-time" class="reminder-time-input">
+                    <span class="time-placeholder">Select time</span>
+                </div>
+                <button id="add-reminder-btn" class="btn-primary">Add</button>
+            </div>
+            <p id="reminder-permission-msg" class="reminder-permission-msg" style="display:none;">
+                Enable notifications in your browser settings to use reminders.
+            </p>
         </div>
     </div>
 
