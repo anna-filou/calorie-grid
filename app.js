@@ -389,7 +389,12 @@ cancelResetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 
 remindersBtn.addEventListener('click', () => {
     renderRemindersList();
-    reminderPermissionMsg.style.display = 'none';
+    if (!('Notification' in window)) {
+        reminderPermissionMsg.textContent = 'Notifications are not supported in this browser.';
+        reminderPermissionMsg.style.display = 'block';
+    } else {
+        reminderPermissionMsg.style.display = 'none';
+    }
     openBottomSheet(remindersSheet);
 });
 closeRemindersSheetBtn.addEventListener('click', () => closeBottomSheet(remindersSheet));

@@ -497,7 +497,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 4px;
+    margin-bottom: 20px;
     max-height: 40vh;
     overflow-y: auto;
 }
