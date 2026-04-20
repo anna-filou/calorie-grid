@@ -483,6 +483,10 @@ body {
     appearance: none;
 }
 
+.reminder-time-input::-webkit-datetime-edit-ampm-field {
+    display: none;
+}
+
 .reminder-add .btn-primary {
     flex: none;
     width: auto;
