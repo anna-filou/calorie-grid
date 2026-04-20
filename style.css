@@ -483,6 +483,10 @@ body {
     appearance: none;
 }
 
+.reminder-time-input::-webkit-datetime-edit-ampm-field {
+    display: none;
+}
+
 .reminder-add .btn-primary {
     flex: none;
     width: auto;
@@ -493,7 +497,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-bottom: 4px;
+    margin-bottom: 20px;
     max-height: 40vh;
     overflow-y: auto;
 }

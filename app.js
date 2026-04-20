@@ -37,6 +37,7 @@ const remindersListEl = document.getElementById('reminders-list');
 const reminderTimeInput = document.getElementById('reminder-time');
 const addReminderBtn = document.getElementById('add-reminder-btn');
 const reminderPermissionMsg = document.getElementById('reminder-permission-msg');
+const reminderAddEl = document.getElementById('reminder-add');
 
 // Constants
 const SQUARE_VALUE = 50; // Each square represents 50 calories
@@ -387,9 +388,27 @@ closeCalorieSheetBtn.addEventListener('click', () => closeBottomSheet(calorieShe
 closeResetSheetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 cancelResetBtn.addEventListener('click', () => closeBottomSheet(resetSheet));
 
+function getOSName() {
+    const ua = navigator.userAgent;
+    if (/iP(hone|od|ad)/.test(ua)) return 'iOS';
+    if (/Android/.test(ua)) return 'Android';
+    if (/Windows/.test(ua)) return 'Windows';
+    if (/Mac/.test(ua)) return 'macOS';
+    if (/Linux/.test(ua)) return 'Linux';
+    return 'your device';
+}
+
 remindersBtn.addEventListener('click', () => {
-    renderRemindersList();
-    reminderPermissionMsg.style.display = 'none';
+    const supported = 'Notification' in window;
+    remindersListEl.style.display = supported ? '' : 'none';
+    reminderAddEl.style.display = supported ? '' : 'none';
+    if (!supported) {
+        reminderPermissionMsg.textContent = `${getOSName()} does not support notifications.`;
+        reminderPermissionMsg.style.display = 'block';
+    } else {
+        reminderPermissionMsg.style.display = 'none';
+        renderRemindersList();
+    }
     openBottomSheet(remindersSheet);
 });
 closeRemindersSheetBtn.addEventListener('click', () => closeBottomSheet(remindersSheet));
