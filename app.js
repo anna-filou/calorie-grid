@@ -247,10 +247,18 @@ function wasAlreadyFiredToday(timeStr) {
     return getFiredToday()[timeStr] === new Date().toDateString();
 }
 
-function markFiredToday(timeStr) {
+async function markFiredToday(timeStr) {
     const fired = getFiredToday();
     fired[timeStr] = new Date().toDateString();
     localStorage.setItem(FIRED_TODAY_KEY, JSON.stringify(fired));
+    if ('caches' in window) {
+        try {
+            const cache = await caches.open('reminders-v1');
+            await cache.put('/reminders-fired-today', new Response(JSON.stringify(fired), {
+                headers: { 'Content-Type': 'application/json' }
+            }));
+        } catch (e) { /* non-critical */ }
+    }
 }
 
 async function fireReminderNotification(timeStr) {
@@ -275,7 +283,7 @@ async function fireReminderNotification(timeStr) {
     }
 }
 
-function checkAndFireReminders() {
+async function checkAndFireReminders() {
     if (!('Notification' in window) || Notification.permission !== 'granted') return;
     const reminders = loadReminders();
     if (!reminders.length) return;
@@ -283,7 +291,7 @@ function checkAndFireReminders() {
     const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     for (const reminder of reminders) {
         if (reminder.time === currentTime && !wasAlreadyFiredToday(reminder.time)) {
-            markFiredToday(reminder.time);
+            await markFiredToday(reminder.time);
             fireReminderNotification(reminder.time);
         }
     }

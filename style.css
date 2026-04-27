@@ -543,3 +543,10 @@ body {
     margin-top: 8px;
     text-align: center;
 }
+
+.reminder-timing-note {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-top: 12px;
+    text-align: center;
+}

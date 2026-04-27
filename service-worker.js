@@ -178,23 +178,35 @@ function formatTimeSW(timeStr) {
 }
 
 async function checkRemindersBackground() {
+  const cache = await caches.open('reminders-v1');
   let reminders = [];
+  let firedToday = {};
+
   try {
-    const cache = await caches.open('reminders-v1');
-    const response = await cache.match('/reminders-data');
-    if (response) reminders = await response.json();
+    const reminderRes = await cache.match('/reminders-data');
+    if (reminderRes) reminders = await reminderRes.json();
   } catch (e) {
     return;
   }
   if (!reminders.length) return;
 
+  try {
+    const firedRes = await cache.match('/reminders-fired-today');
+    if (firedRes) firedToday = await firedRes.json();
+  } catch (e) { /* start fresh */ }
+
   const now = new Date();
-  const hh = String(now.getHours()).padStart(2, '0');
-  const mm = String(now.getMinutes()).padStart(2, '0');
-  const currentTime = `${hh}:${mm}`;
+  const todayStr = now.toDateString();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  let changed = false;
 
   for (const reminder of reminders) {
-    if (reminder.time === currentTime) {
+    const [rH, rM] = reminder.time.split(':').map(Number);
+    const reminderMinutes = rH * 60 + rM;
+    const minutesPast = nowMinutes - reminderMinutes;
+
+    // Fire if within 2 hours past the reminder time and not already fired today
+    if (minutesPast >= 0 && minutesPast < 120 && firedToday[reminder.time] !== todayStr) {
       await self.registration.showNotification('Time to track your meal!', {
         body: `It's ${formatTimeSW(reminder.time)} — log what you ate in Calorie Grid.`,
         icon: '/icons/icon-256x256.png',
@@ -203,6 +215,14 @@ async function checkRemindersBackground() {
         renotify: true,
         data: { url: '/' }
       });
+      firedToday[reminder.time] = todayStr;
+      changed = true;
     }
+  }
+
+  if (changed) {
+    await cache.put('/reminders-fired-today', new Response(JSON.stringify(firedToday), {
+      headers: { 'Content-Type': 'application/json' }
+    }));
   }
 }
